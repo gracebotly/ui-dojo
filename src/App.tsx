@@ -15,13 +15,26 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useState } from "react";
-import { Sparkles, Bot, MessageSquare, type LucideIcon } from "lucide-react";
+import {
+  Sparkles,
+  Bot,
+  MessageSquare,
+  type LucideIcon,
+  Workflow,
+  AppWindowMac,
+} from "lucide-react";
 import { AISdkDemo } from "@/demos/ai-sdk";
 import { CopilotKitDemo } from "@/demos/copilot-kit";
 import { AssistantUIDemo } from "@/demos/assistant-ui";
 import { GenerativeUserInterfacesDemo } from "./demos/ai-sdk/generative-user-interfaces";
+import { WorkflowDemo } from "./demos/ai-sdk/workflow";
 
-type SidebarId = "aisdk" | "assistant-ui" | "copilot-kit" | "generative-user-interfaces";
+type SidebarId =
+  | "aisdk"
+  | "assistant-ui"
+  | "copilot-kit"
+  | "generative-user-interfaces"
+  | "workflow";
 
 type SidebarEntry = {
   id: SidebarId;
@@ -51,7 +64,7 @@ const SIDEBAR: SidebarGroupEntry[] = [
         id: "assistant-ui",
         name: "Assistant UI",
         icon: Bot,
-        description: "TODO",
+        description: "Built with Assistant UI's Thread components",
       },
       {
         id: "copilot-kit",
@@ -68,11 +81,17 @@ const SIDEBAR: SidebarGroupEntry[] = [
       {
         id: "generative-user-interfaces",
         name: "Generative UIs",
-        icon: Sparkles,
+        icon: AppWindowMac,
         description: "How to build custom UIs for tool responses",
-      }
-    ]
-  }
+      },
+      {
+        id: "workflow",
+        name: "Workflow",
+        icon: Workflow,
+        description: "Building multi-step workflows with AI SDK",
+      },
+    ],
+  },
 ];
 
 export default function Page() {
@@ -88,6 +107,8 @@ export default function Page() {
         return <AssistantUIDemo />;
       case "generative-user-interfaces":
         return <GenerativeUserInterfacesDemo />;
+      case "workflow":
+        return <WorkflowDemo />;
     }
   };
 

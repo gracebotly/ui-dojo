@@ -25,7 +25,8 @@ import {
   Cloud,
   type LucideIcon,
 } from "lucide-react";
-import type { WeatherIconName } from "@/mastra/tools/weather-tool";
+import type { WeatherIconName } from "@/mastra/shared";
+import { Loader } from "@/components/ai-elements/loader";
 
 type WeatherProps = {
   temperature: number;
@@ -53,7 +54,7 @@ const ICON_MAP: Record<WeatherIconName, LucideIcon> = {
   cloud: Cloud,
 };
 
-export const Weather = ({
+const Weather = ({
   temperature,
   feelsLike,
   humidity,
@@ -146,7 +147,6 @@ export const GenerativeUserInterfacesDemo = () => {
           </Button>
         </form>
       </div>
-
       <div>
         {messages.map((message) => (
           <div key={message.id}>
@@ -165,7 +165,7 @@ export const GenerativeUserInterfacesDemo = () => {
                 if (part.type === "tool-weatherTool") {
                   switch (part.state) {
                     case "input-available":
-                      return <div key={index}>Loading weather...</div>;
+                      return <Loader />;
                     case "output-available":
                       return (
                         <div key={index}>

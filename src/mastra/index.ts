@@ -27,6 +27,8 @@ export const mastra = new Mastra({
     externals: ["@ag-ui/mastra", "@ag-ui/core", "@ag-ui/client", "@copilotkit/runtime"],
   },
   server: {
+    // Use a non-default port to avoid conflicts with other Mastra servers running locally
+    port: 4750,
     cors: {
       origin: "*",
       allowMethods: ["*"],

@@ -44,9 +44,14 @@ interface ThreadSuggestionsProps {
 
 interface ThreadProps extends ThreadSuggestionsProps {
   welcome: string;
+  agentName?: string;
 }
 
-export const Thread: FC<ThreadProps> = ({ suggestions, welcome }) => {
+export const Thread: FC<ThreadProps> = ({
+  suggestions,
+  welcome,
+  agentName,
+}) => {
   return (
     <LazyMotion features={domAnimation}>
       <MotionConfig reducedMotion="user">
@@ -58,7 +63,11 @@ export const Thread: FC<ThreadProps> = ({ suggestions, welcome }) => {
         >
           <ThreadPrimitive.Viewport className="aui-thread-viewport relative flex flex-1 flex-col overflow-x-auto overflow-y-scroll px-4">
             <ThreadPrimitive.If empty>
-              <ThreadWelcome suggestions={suggestions} welcome={welcome} />
+              <ThreadWelcome
+                suggestions={suggestions}
+                welcome={welcome}
+                agentName={agentName}
+              />
             </ThreadPrimitive.If>
 
             <ThreadPrimitive.Messages
@@ -97,12 +106,17 @@ const ThreadScrollToBottom: FC = () => {
 
 interface ThreadWelcomeProps extends ThreadSuggestionsProps {
   welcome: string;
+  agentName?: string;
 }
 
-const ThreadWelcome: FC<ThreadWelcomeProps> = ({ suggestions, welcome }) => {
+const ThreadWelcome: FC<ThreadWelcomeProps> = ({
+  suggestions,
+  welcome,
+  agentName,
+}) => {
   return (
-    <div className="aui-thread-welcome-root mx-auto my-auto flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
-      <div className="aui-thread-welcome-center flex w-full flex-grow flex-col items-center justify-center">
+    <div className="aui-thread-welcome-root mx-auto my-auto flex w-full max-w-(--thread-max-width) grow flex-col">
+      <div className="aui-thread-welcome-center flex w-full grow flex-col items-center justify-center">
         <div className="aui-thread-welcome-message flex size-full flex-col justify-center px-8">
           <m.div
             initial={{ opacity: 0, y: 10 }}
@@ -110,7 +124,7 @@ const ThreadWelcome: FC<ThreadWelcomeProps> = ({ suggestions, welcome }) => {
             exit={{ opacity: 0, y: 10 }}
             className="aui-thread-welcome-message-motion-1 text-2xl font-semibold"
           >
-            Hello 👋🏻
+            Hello{agentName ? ` from ${agentName}` : ""} 👋🏻
           </m.div>
           <m.div
             initial={{ opacity: 0, y: 10 }}
@@ -138,7 +152,7 @@ const ThreadSuggestions: FC<ThreadSuggestionsProps> = ({ suggestions }) => {
           exit={{ opacity: 0, y: 20 }}
           transition={{ delay: 0.05 * index }}
           key={`suggested-action-${suggestedAction.title}-${index}`}
-          className="aui-thread-welcome-suggestion-display [&:nth-child(n+3)]:hidden @md:[&:nth-child(n+3)]:block"
+          className="aui-thread-welcome-suggestion-display nth-[n+3]:hidden @md:nth-[n+3]:block"
         >
           <ThreadPrimitive.Suggestion
             prompt={suggestedAction.action}
@@ -163,7 +177,7 @@ const ThreadSuggestions: FC<ThreadSuggestionsProps> = ({ suggestions }) => {
 
 const Composer: FC = () => {
   return (
-    <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 overflow-visible rounded-t-3xl bg-background pb-4 md:pb-6">
+    <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-(--thread-max-width) flex-col gap-4 overflow-visible rounded-t-3xl bg-background pb-4 md:pb-6">
       <ThreadScrollToBottom />
       <ComposerPrimitive.Root className="aui-composer-root group/input-group relative flex w-full flex-col rounded-3xl border border-input bg-background px-1 pt-2 shadow-xs transition-[color,box-shadow] outline-none has-[textarea:focus-visible]:border-ring has-[textarea:focus-visible]:ring-[3px] has-[textarea:focus-visible]:ring-ring/50 dark:bg-background">
         <ComposerAttachments />
@@ -232,10 +246,10 @@ const AssistantMessage: FC = () => {
   return (
     <MessagePrimitive.Root asChild>
       <div
-        className="aui-assistant-message-root relative mx-auto w-full max-w-[var(--thread-max-width)] animate-in py-4 duration-150 ease-out fade-in slide-in-from-bottom-1 last:mb-24"
+        className="aui-assistant-message-root relative mx-auto w-full max-w-(--thread-max-width) animate-in py-4 duration-150 ease-out fade-in slide-in-from-bottom-1 last:mb-24"
         data-role="assistant"
       >
-        <div className="aui-assistant-message-content mx-2 leading-7 break-words text-foreground">
+        <div className="aui-assistant-message-content mx-2 leading-7 wrap-break-word text-foreground">
           <MessagePrimitive.Parts
             components={{
               Text: MarkdownText,
@@ -285,13 +299,13 @@ const UserMessage: FC = () => {
   return (
     <MessagePrimitive.Root asChild>
       <div
-        className="aui-user-message-root mx-auto grid w-full max-w-[var(--thread-max-width)] animate-in auto-rows-auto grid-cols-[minmax(72px,1fr)_auto] gap-y-2 px-2 py-4 duration-150 ease-out fade-in slide-in-from-bottom-1 first:mt-3 last:mb-5 [&:where(>*)]:col-start-2"
+        className="aui-user-message-root mx-auto grid w-full max-w-(--thread-max-width) animate-in auto-rows-auto grid-cols-[minmax(72px,1fr)_auto] gap-y-2 px-2 py-4 duration-150 ease-out fade-in slide-in-from-bottom-1 first:mt-3 last:mb-5 [&:where(>*)]:col-start-2"
         data-role="user"
       >
         <UserMessageAttachments />
 
         <div className="aui-user-message-content-wrapper relative col-start-2 min-w-0">
-          <div className="aui-user-message-content rounded-3xl bg-muted px-5 py-2.5 break-words text-foreground">
+          <div className="aui-user-message-content rounded-3xl bg-muted px-5 py-2.5 wrap-break-word text-foreground">
             <MessagePrimitive.Parts />
           </div>
           <div className="aui-user-action-bar-wrapper absolute top-1/2 left-0 -translate-x-full -translate-y-1/2 pr-2">
@@ -323,7 +337,7 @@ const UserActionBar: FC = () => {
 
 const EditComposer: FC = () => {
   return (
-    <div className="aui-edit-composer-wrapper mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 px-2 first:mt-4">
+    <div className="aui-edit-composer-wrapper mx-auto flex w-full max-w-(--thread-max-width) flex-col gap-4 px-2 first:mt-4">
       <ComposerPrimitive.Root className="aui-edit-composer-root ml-auto flex w-full max-w-7/8 flex-col rounded-xl bg-muted">
         <ComposerPrimitive.Input
           className="aui-edit-composer-input flex min-h-[60px] w-full resize-none bg-transparent p-4 text-foreground outline-none"

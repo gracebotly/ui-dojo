@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -55,7 +55,7 @@ const SIDEBAR: SidebarGroupEntry[] = [
       {
         id: "assistant-ui",
         name: "Assistant UI",
-        url: "/assistant-ui",
+        url: "/assistant-ui/ghibliAgent/chat/new",
         icon: Bot,
         description: "Basic example how to use Assistant UI with Mastra",
       },
@@ -140,77 +140,79 @@ const SIDEBAR: SidebarGroupEntry[] = [
 
 export default function Page({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
+
+  const normalizedPathname = location.pathname.includes("/chat/")
+    ? location.pathname.split("/chat/")[0] + "/chat/new"
+    : location.pathname;
 
   return (
     <SidebarProvider>
-        <Sidebar variant="inset">
-          <SidebarHeader>
-            <div className="font-bold">UI Frameworks</div>
-            <div className="text-sm text-sidebar-foreground/70">
-              Learn how you can use Mastra with different UI frameworks.
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            {SIDEBAR.map((group) => (
-              <SidebarGroup
-                key={group.groupId}
-                className="group-data-[collapsible=icon]:hidden"
-              >
-                <SidebarGroupLabel>{group.groupName}</SidebarGroupLabel>
-                <SidebarMenu>
-                  {group.items.map((item) => (
-                    <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        className="hover:cursor-pointer"
-                        onClick={() => navigate(item.url)}
-                        isActive={item.url === location.pathname}
-                      >
-                        <item.icon />
-                        <span>{item.name}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroup>
-            ))}
-          </SidebarContent>
-          <SidebarFooter>
-            <Button asChild variant="outline">
-              <a href="https://github.com/mastra-ai/ui-dojo" target="_blank">
-                <SiGithub /> Source Code
-              </a>
-            </Button>
-          </SidebarFooter>
-        </Sidebar>
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
-              <h1 className="font-bold text-xl">
-                {
-                  SIDEBAR.flatMap((group) => group.items).find(
-                    (item) => item.url === location.pathname,
-                  )?.name
-                }
-              </h1>
-            </div>
-            <div>
+      <Sidebar variant="inset">
+        <SidebarHeader>
+          <div className="font-bold">UI Frameworks</div>
+          <div className="text-sm text-sidebar-foreground/70">
+            Learn how you can use Mastra with different UI frameworks.
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          {SIDEBAR.map((group) => (
+            <SidebarGroup
+              key={group.groupId}
+              className="group-data-[collapsible=icon]:hidden"
+            >
+              <SidebarGroupLabel>{group.groupName}</SidebarGroupLabel>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton
+                      className="hover:cursor-pointer"
+                      onClick={() => navigate(item.url)}
+                      isActive={item.url === normalizedPathname}
+                    >
+                      <item.icon />
+                      <span>{item.name}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          ))}
+        </SidebarContent>
+        <SidebarFooter>
+          <Button asChild variant="outline">
+            <a href="https://github.com/mastra-ai/ui-dojo" target="_blank">
+              <SiGithub /> Source Code
+            </a>
+          </Button>
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <h1 className="font-bold text-xl">
               {
                 SIDEBAR.flatMap((group) => group.items).find(
-                  (item) => item.url === location.pathname,
-                )?.description
+                  (item) => item.url === normalizedPathname,
+                )?.name
               }
-            </div>
-          </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            {children}
+            </h1>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
+          <div>
+            {
+              SIDEBAR.flatMap((group) => group.items).find(
+                (item) => item.url === normalizedPathname,
+              )?.description
+            }
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

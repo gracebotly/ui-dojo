@@ -257,4 +257,4 @@ const AISdkDemo = () => {
   );
 };
 
-export default AISdkDemo
+export default AISdkDemo;

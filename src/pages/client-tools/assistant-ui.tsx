@@ -3,7 +3,6 @@ import {
   useChatRuntime,
   AssistantChatTransport,
 } from "@assistant-ui/react-ai-sdk";
-import { ThreadList } from "@/components/assistant-ui/thread-list";
 import { Thread } from "@/components/assistant-ui/thread";
 import { changeBgColor } from "@/mastra/tools/color-change-tool";
 import { MASTRA_BASE_URL } from "@/constants";
@@ -33,8 +32,7 @@ const ClientAssistantUIDemo = () => {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <div className="grid grid-cols-[200px_1fr] gap-x-2 px-4 py-4 size-full">
-        <ThreadList />
+      <div className="size-full">
         <Thread
           suggestions={suggestions}
           welcome="Ask me to change the background color"

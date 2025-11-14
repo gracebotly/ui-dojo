@@ -34,6 +34,7 @@ import { SubAgentsAndWorkflowsCustomEventsDemo } from "./demos/ai-sdk/sub-agents
 import { AgentNetworkCustomEventsDemo } from "./demos/ai-sdk/agent-network-custom-events";
 import { WorkflowDemo } from "./demos/ai-sdk/workflow";
 import { NetworkDemo } from "./demos/ai-sdk/network";
+import { WorkflowSuspendResumeDemo } from "./demos/ai-sdk/workflow-suspend-resume";
 import { ClientAISdkDemo } from "./demos/client-sdk/ai-sdk";
 import { ClientAssistantUIDemo } from "./demos/client-sdk/assistant-ui";
 import { ClientCopilotKitDemo } from "./demos/client-sdk/copilot-kit";
@@ -202,8 +203,8 @@ export default function Page() {
         return <SubAgentsAndWorkflowsCustomEventsDemo />;
       case "agent-network-with-custom-events":
         return <AgentNetworkCustomEventsDemo />;
-      // case "hitl-workflow-suspend-resume":
-      //   return <WorkflowSuspendResumeDemo />;
+      case "hitl-workflow-suspend-resume":
+        return <WorkflowSuspendResumeDemo />;
       case "client-ai-sdk":
         return <ClientAISdkDemo />;
       case "client-assistant-ui":

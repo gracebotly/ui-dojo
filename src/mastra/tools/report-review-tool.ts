@@ -3,7 +3,8 @@ import { z } from "zod";
 
 export const reportReviewTool = createTool({
   id: "review-report",
-  description: "Reviews and edits a report to improve quality, clarity, and completeness",
+  description:
+    "Reviews and edits a report to improve quality, clarity, and completeness",
   inputSchema: z.object({
     reportContent: z.string().describe("The report content to review"),
     topic: z.string().describe("The topic of the report"),
@@ -66,4 +67,3 @@ export const reportReviewTool = createTool({
     };
   },
 });
-

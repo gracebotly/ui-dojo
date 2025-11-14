@@ -80,7 +80,7 @@ const AssistantUIDemo = () => {
   }
 
   return (
-    <div className="grid grid-cols-[200px_1fr] gap-x-2 px-4 py-4 size-full">
+    <div className="grid grid-cols-[130px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] gap-x-2 size-full">
       <Sidebar
         threads={threads || []}
         resourceId={agentId!}
@@ -271,25 +271,27 @@ const Sidebar = ({
         const threadLink = `/assistant-ui/${agentId}/chat/${thread.id}`;
 
         return (
-          <li key={thread.id}>
+          <li key={thread.id} className="flex items-center gap-2 w-full">
             <Button
-              className="aui-thread-list-new flex items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-start hover:bg-muted data-active:bg-muted"
+              className="aui-thread-list-new rounded-lg px-2.5 py-2 justify-start hover:bg-muted data-active:bg-muted flex-1 min-w-0"
               variant="ghost"
               asChild
               data-active={isActive ? true : undefined}
             >
-              <div>
-                <Link className="max-w-32 truncate" to={threadLink}>
-                  {thread.title}
-                </Link>
-                <Button
-                  onClick={() => onDelete(thread.id)}
-                  variant="outline"
-                  size="icon-sm"
-                >
-                  <X aria-label="Delete Thread" />
-                </Button>
-              </div>
+              <Link
+                className="flex items-center min-w-0 w-full"
+                to={threadLink}
+              >
+                <span className="truncate">{thread.title}</span>
+              </Link>
+            </Button>
+            <Button
+              onClick={() => onDelete(thread.id)}
+              variant="outline"
+              size="icon-sm"
+              className="shrink-0"
+            >
+              <X aria-label="Delete Thread" />
             </Button>
           </li>
         );

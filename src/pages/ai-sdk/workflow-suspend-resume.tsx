@@ -7,7 +7,13 @@ import {
   ToolOutput,
 } from "@/components/ai-elements/tool";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MASTRA_BASE_URL } from "@/constants";
@@ -19,7 +25,10 @@ import type { WorkflowDataPart } from "@mastra/ai-sdk";
 
 type WorkflowData = WorkflowDataPart["data"];
 
-const STATUS_MAP: Record<WorkflowData["steps"][string]["status"], ToolUIPart["state"]> = {
+const STATUS_MAP: Record<
+  WorkflowData["steps"][string]["status"],
+  ToolUIPart["state"]
+> = {
   running: "input-available",
   waiting: "input-available",
   suspended: "input-available",
@@ -28,11 +37,11 @@ const STATUS_MAP: Record<WorkflowData["steps"][string]["status"], ToolUIPart["st
   bailed: "output-error",
 };
 
-const DisplayStep = ({ 
-  step, 
-  title 
-}: { 
-  step: WorkflowData["steps"][string]; 
+const DisplayStep = ({
+  step,
+  title,
+}: {
+  step: WorkflowData["steps"][string];
   title: string;
 }) => {
   return (
@@ -52,22 +61,24 @@ const DisplayStep = ({
                   Awaiting Approval
                 </div>
                 <div className="text-sm text-yellow-800 dark:text-yellow-200">
-                  {typeof step.suspendPayload === "object" && "message" in step.suspendPayload
+                  {typeof step.suspendPayload === "object" &&
+                  "message" in step.suspendPayload
                     ? String(step.suspendPayload.message)
                     : JSON.stringify(step.suspendPayload)}
                 </div>
-                {typeof step.suspendPayload === "object" && "requestId" in step.suspendPayload && (
-                  <Badge variant="outline" className="mt-2">
-                    ID: {String(step.suspendPayload.requestId)}
-                  </Badge>
-                )}
+                {typeof step.suspendPayload === "object" &&
+                  "requestId" in step.suspendPayload && (
+                    <Badge variant="outline" className="mt-2">
+                      ID: {String(step.suspendPayload.requestId)}
+                    </Badge>
+                  )}
               </div>
             </div>
           </div>
         )}
-        <ToolOutput 
-          output={step.output} 
-          errorText={step.status === "failed" ? "Step failed" : undefined} 
+        <ToolOutput
+          output={step.output}
+          errorText={step.status === "failed" ? "Step failed" : undefined}
         />
       </ToolContent>
     </Tool>
@@ -84,9 +95,16 @@ const WorkflowSuspendResumeDemo = () => {
     transport: new DefaultChatTransport({
       api: `${MASTRA_BASE_URL}/workflow/approvalWorkflow`,
       prepareSendMessagesRequest: ({ messages }) => {
-
-        const lastMessage = messages[messages.length - 1].parts.find((part) => part.type === "text")?.text;
-        const metadata = messages[messages.length - 1].metadata as { runId: string, approverName?: string, requestType?: string, amount?: string, details?: string };
+        const lastMessage = messages[messages.length - 1].parts.find(
+          (part) => part.type === "text",
+        )?.text;
+        const metadata = messages[messages.length - 1].metadata as {
+          runId: string;
+          approverName?: string;
+          requestType?: string;
+          amount?: string;
+          details?: string;
+        };
 
         if (lastMessage === "Approve" || lastMessage === "Reject") {
           return {
@@ -118,43 +136,50 @@ const WorkflowSuspendResumeDemo = () => {
   const suspendedWorkflow = useMemo(() => {
     const part = messages
       .flatMap((m) => m.parts)
-      .find((part): part is WorkflowDataPart => 
-        part.type === "data-workflow" && 
-        "data" in part &&
-        typeof part.data === "object" &&
-        part.data !== null &&
-        "status" in part.data &&
-        part.data.status === "suspended"
+      .find(
+        (part): part is WorkflowDataPart =>
+          part.type === "data-workflow" &&
+          "data" in part &&
+          typeof part.data === "object" &&
+          part.data !== null &&
+          "status" in part.data &&
+          part.data.status === "suspended",
       );
     return part ? (part.data as WorkflowData) : null;
   }, [messages]);
 
-  const prevRunId = 
-    messages
-      .flatMap((m) => m.parts)
-      .find((part): part is WorkflowDataPart => 
-        part.type === "data-workflow"
-      )?.id;
-
-
+  const prevRunId = messages
+    .flatMap((m) => m.parts)
+    .find(
+      (part): part is WorkflowDataPart => part.type === "data-workflow",
+    )?.id;
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault();
     if (!requestType.trim() || !details.trim()) return;
     setMessages([]);
-    sendMessage({ text: "Start", metadata: {runId: prevRunId, requestType, amount, details } });
+    sendMessage({
+      text: "Start",
+      metadata: { runId: prevRunId, requestType, amount, details },
+    });
   };
 
   const handleApprove = () => {
     if (!suspendedWorkflow) return;
     setMessages([]);
-    sendMessage({ text: "Approve", metadata: {runId: prevRunId, approverName } });
+    sendMessage({
+      text: "Approve",
+      metadata: { runId: prevRunId, approverName },
+    });
   };
 
   const handleReject = () => {
     if (!suspendedWorkflow) return;
     setMessages([]);
-    sendMessage({ text: "Reject", metadata: {runId: prevRunId, approverName } });
+    sendMessage({
+      text: "Reject",
+      metadata: { runId: prevRunId, approverName },
+    });
   };
 
   const isSuspended = suspendedWorkflow !== null;
@@ -170,7 +195,8 @@ const WorkflowSuspendResumeDemo = () => {
             <CardTitle>Request Approval Workflow</CardTitle>
           </div>
           <CardDescription>
-            Submit a request that requires approval. The workflow will suspend and wait for your decision.
+            Submit a request that requires approval. The workflow will suspend
+            and wait for your decision.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -229,7 +255,11 @@ const WorkflowSuspendResumeDemo = () => {
             )}
             <div className="flex gap-2">
               {canStart && (
-                <Button type="submit" disabled={!requestType.trim() || !details.trim()} className="flex-1">
+                <Button
+                  type="submit"
+                  disabled={!requestType.trim() || !details.trim()}
+                  className="flex-1"
+                >
                   Submit Request
                 </Button>
               )}
@@ -280,7 +310,8 @@ const WorkflowSuspendResumeDemo = () => {
               }
 
               if (part.type === "data-workflow") {
-                const workflow = (part as WorkflowDataPart).data as WorkflowData;
+                const workflow = (part as WorkflowDataPart)
+                  .data as WorkflowData;
                 const steps = Object.entries(workflow.steps);
 
                 return (
@@ -288,22 +319,31 @@ const WorkflowSuspendResumeDemo = () => {
                     {steps.map(([stepId, step]) => (
                       <DisplayStep key={stepId} step={step} title={stepId} />
                     ))}
-                    {status === "ready" && workflow.steps["finalize-request"]?.status === "success" && (
-                      <Message from="assistant">
-                        <MessageContent>
-                          <Response>
-                            {(() => {
-                              const output = workflow.steps["finalize-request"]?.output;
-                              if (output && typeof output === "object" && "message" in output) {
-                                const message = output.message;
-                                return typeof message === "string" ? message : null;
-                              }
-                              return null;
-                            })()}
-                          </Response>
-                        </MessageContent>
-                      </Message>
-                    )}
+                    {status === "ready" &&
+                      workflow.steps["finalize-request"]?.status ===
+                        "success" && (
+                        <Message from="assistant">
+                          <MessageContent>
+                            <Response>
+                              {(() => {
+                                const output =
+                                  workflow.steps["finalize-request"]?.output;
+                                if (
+                                  output &&
+                                  typeof output === "object" &&
+                                  "message" in output
+                                ) {
+                                  const message = output.message;
+                                  return typeof message === "string"
+                                    ? message
+                                    : null;
+                                }
+                                return null;
+                              })()}
+                            </Response>
+                          </MessageContent>
+                        </Message>
+                      )}
                   </div>
                 );
               }

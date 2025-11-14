@@ -145,4 +145,3 @@ export const orderFulfillmentWorkflow = createWorkflow({
   .then(prepareShipping);
 
 orderFulfillmentWorkflow.commit();
-

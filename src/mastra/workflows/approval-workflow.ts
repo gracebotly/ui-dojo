@@ -51,7 +51,6 @@ const requestApproval = createStep({
     requestId: z.string().describe("The request ID"),
   }),
   execute: async ({ inputData, resumeData, suspend, bail }) => {
-
     // If the user has rejected, bail out
     if (resumeData?.approved === false) {
       return bail({
@@ -100,9 +99,12 @@ const finalizeRequest = createStep({
 
 export const approvalWorkflow = createWorkflow({
   id: "approval-workflow",
-  description: "A workflow that processes a request, requests approval, and finalizes it",
+  description:
+    "A workflow that processes a request, requests approval, and finalizes it",
   inputSchema: z.object({
-    requestType: z.string().describe("Type of request (e.g., 'expense', 'vacation', 'purchase')"),
+    requestType: z
+      .string()
+      .describe("Type of request (e.g., 'expense', 'vacation', 'purchase')"),
     amount: z.number().optional().describe("Amount if applicable"),
     details: z.string().describe("Additional details about the request"),
   }),
@@ -117,4 +119,3 @@ export const approvalWorkflow = createWorkflow({
   .then(finalizeRequest);
 
 approvalWorkflow.commit();
-

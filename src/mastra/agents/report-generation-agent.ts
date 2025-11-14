@@ -13,4 +13,3 @@ export const reportGenerationAgent = new Agent({
   tools: { reportGenerationTool },
   memory: new Memory(),
 });
-

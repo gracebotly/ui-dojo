@@ -25,4 +25,3 @@ export const orderProcessingAgent = new Agent({
   },
   memory: new Memory(),
 });
-

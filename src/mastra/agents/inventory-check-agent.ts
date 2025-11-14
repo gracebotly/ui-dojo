@@ -13,4 +13,3 @@ export const inventoryCheckAgent = new Agent({
   tools: { inventoryCheckTool },
   memory: new Memory(),
 });
-

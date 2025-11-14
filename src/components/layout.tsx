@@ -215,7 +215,7 @@ export default function Page({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2">
+        <header className="flex flex-col py-4 lg:py-0 lg:flex-row h-26 lg:h-18 shrink-0 items-start lg:items-center gap-2">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -230,7 +230,7 @@ export default function Page({ children }: { children: React.ReactNode }) {
               }
             </h1>
           </div>
-          <div>
+          <div className="px-4 lg:px-0">
             {
               SIDEBAR.flatMap((group) => group.items).find(
                 (item) => item.url === normalizedPathname,

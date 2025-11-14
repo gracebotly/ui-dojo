@@ -2,7 +2,13 @@ import { Message, MessageContent } from "@/components/ai-elements/message";
 import { Response } from "@/components/ai-elements/response";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useMemo, useState } from "react";
@@ -75,7 +81,9 @@ const ProgressIndicator = ({
             {getStageName()}
           </div>
           <Badge
-            variant={progress.status === "in-progress" ? "default" : "secondary"}
+            variant={
+              progress.status === "in-progress" ? "default" : "secondary"
+            }
             className="text-xs"
           >
             {progress.status === "in-progress" ? "In Progress" : "Done"}
@@ -105,7 +113,8 @@ const AgentNetworkCustomEventsDemo = () => {
 
   // Collect all progress events
   const progressEvents = useMemo(() => {
-    const events: Array<ProgressData & { stage?: string; agentName?: string }> = [];
+    const events: Array<ProgressData & { stage?: string; agentName?: string }> =
+      [];
     messages.forEach((message) => {
       message.parts.forEach((part) => {
         if (part.type === "data-tool-progress") {
@@ -127,7 +136,10 @@ const AgentNetworkCustomEventsDemo = () => {
 
   // Get the latest event for each stage
   const latestByStage = useMemo(() => {
-    const byStage: Record<string, ProgressData & { stage?: string; agentName?: string }> = {};
+    const byStage: Record<
+      string,
+      ProgressData & { stage?: string; agentName?: string }
+    > = {};
     progressEvents.forEach((event) => {
       if (event.stage) {
         if (!byStage[event.stage] || event.status === "done") {
@@ -148,7 +160,8 @@ const AgentNetworkCustomEventsDemo = () => {
               <CardTitle>Report Generator</CardTitle>
             </div>
             <CardDescription>
-              Generate or review reports on any topic. The Report Agent Network will route to the appropriate specialized agent.
+              Generate or review reports on any topic. The Report Agent Network
+              will route to the appropriate specialized agent.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -165,9 +178,9 @@ const AgentNetworkCustomEventsDemo = () => {
                   required
                 />
               </div>
-              <Button 
-                type="submit" 
-                disabled={status !== "ready" || !topic.trim()} 
+              <Button
+                type="submit"
+                disabled={status !== "ready" || !topic.trim()}
                 className="w-full"
               >
                 {status === "ready" ? "Generate Report" : "Processing..."}
@@ -180,10 +193,11 @@ const AgentNetworkCustomEventsDemo = () => {
         {messages.map((message, idx) => {
           // Check if message has any renderable text parts
           const hasTextParts = message.parts.some(
-            (part) => part.type === "text" && part.text?.trim()
+            (part) => part.type === "text" && part.text?.trim(),
           );
           const isLatestMessage = idx === messages.length - 1;
-          const hasProgress = isLatestMessage && Object.keys(latestByStage).length > 0;
+          const hasProgress =
+            isLatestMessage && Object.keys(latestByStage).length > 0;
 
           // Only render if there's content to show
           if (!hasTextParts && !hasProgress) {
@@ -196,18 +210,21 @@ const AgentNetworkCustomEventsDemo = () => {
                 {/* Show progress indicators for the latest message */}
                 {hasProgress && (
                   <div className="my-4 space-y-2">
-                    {Object.entries(latestByStage)
-                      .map(([stage, event]) => (
-                        <ProgressIndicator
-                          key={stage}
-                          progress={event}
-                          agentName={event.agentName}
-                        />
-                      ))}
+                    {Object.entries(latestByStage).map(([stage, event]) => (
+                      <ProgressIndicator
+                        key={stage}
+                        progress={event}
+                        agentName={event.agentName}
+                      />
+                    ))}
                   </div>
                 )}
                 {message.parts.map((part, index) => {
-                  if (part.type === "text" && message.role === "user" && part.text?.trim()) {
+                  if (
+                    part.type === "text" &&
+                    message.role === "user" &&
+                    part.text?.trim()
+                  ) {
                     return (
                       <Message key={index} from={message.role}>
                         <MessageContent>
@@ -217,7 +234,11 @@ const AgentNetworkCustomEventsDemo = () => {
                     );
                   }
 
-                  if (part.type === "text" && message.role === "assistant" && part.text?.trim()) {
+                  if (
+                    part.type === "text" &&
+                    message.role === "assistant" &&
+                    part.text?.trim()
+                  ) {
                     return (
                       <Message key={index} from={message.role}>
                         <MessageContent>

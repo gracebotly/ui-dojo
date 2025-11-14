@@ -13,4 +13,3 @@ export const dataAnalysisAgent = new Agent({
   tools: { dataAnalysisTool },
   memory: new Memory(),
 });
-

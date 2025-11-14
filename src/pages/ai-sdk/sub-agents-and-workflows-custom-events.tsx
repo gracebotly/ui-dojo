@@ -2,7 +2,13 @@ import { Message, MessageContent } from "@/components/ai-elements/message";
 import { Response } from "@/components/ai-elements/response";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useMemo, useState } from "react";
@@ -72,7 +78,9 @@ const ProgressIndicator = ({
             {getStageName()}
           </div>
           <Badge
-            variant={progress.status === "in-progress" ? "default" : "secondary"}
+            variant={
+              progress.status === "in-progress" ? "default" : "secondary"
+            }
             className="text-xs"
           >
             {progress.status === "in-progress" ? "In Progress" : "Done"}
@@ -97,7 +105,7 @@ const SubAgentsAndWorkflowsCustomEventsDemo = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!productId || !quantity || !amount) return;
-    
+
     const orderMessage = `Place an order for product ${productId}, quantity ${quantity}, amount ${amount}`;
     sendMessage({ text: orderMessage });
     setProductId("");
@@ -192,9 +200,11 @@ const SubAgentsAndWorkflowsCustomEventsDemo = () => {
                 />
               </div>
             </div>
-            <Button 
-              type="submit" 
-              disabled={status !== "ready" || !productId || !quantity || !amount}
+            <Button
+              type="submit"
+              disabled={
+                status !== "ready" || !productId || !quantity || !amount
+              }
               className="w-full"
             >
               {status === "ready" ? "Place Order" : "Processing..."}

@@ -14,4 +14,3 @@ export const reportReviewAgent = new Agent({
   tools: { reportReviewTool },
   memory: new Memory(),
 });
-

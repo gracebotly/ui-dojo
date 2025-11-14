@@ -6,11 +6,18 @@ import {
 import { Message, MessageContent } from "@/components/ai-elements/message";
 import {
   PromptInput,
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuTrigger,
+  PromptInputAttachment,
+  PromptInputAttachments,
   PromptInputBody,
   type PromptInputMessage,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputFooter,
+  PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
 import { Action, Actions } from "@/components/ai-elements/actions";
 import { Fragment, useState } from "react";
@@ -32,19 +39,24 @@ import {
 import { Loader } from "@/components/ai-elements/loader";
 import { DefaultChatTransport } from "ai";
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
+import { changeBgColor } from "@/mastra/tools/color-change-tool";
 
 const suggestions = [
-  "Tell me about Spirited Away",
-  "Plan activities in Seoul",
-  "What's the weather in Tokyo?",
+  "Change the background color to a dark blue",
+  "Change the background color to rebeccapurple",
 ];
 
-export const NetworkDemo = () => {
+const ClientAISdkDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, regenerate } = useChat({
     transport: new DefaultChatTransport({
-      api: `${MASTRA_BASE_URL}/network`,
+      api: `${MASTRA_BASE_URL}/chat/bgColorAgent`,
     }),
+    onToolCall: ({ toolCall }) => {
+      if (toolCall.toolName === "colorChangeTool") {
+        changeBgColor((toolCall.input as { color: string }).color);
+      }
+    },
   });
 
   const handleSubmit = (message: PromptInputMessage) => {
@@ -170,15 +182,23 @@ export const NetworkDemo = () => {
           multiple
         >
           <PromptInputBody>
+            <PromptInputAttachments>
+              {(attachment) => <PromptInputAttachment data={attachment} />}
+            </PromptInputAttachments>
             <PromptInputTextarea
               onChange={(e) => setInput(e.target.value)}
               value={input}
             />
           </PromptInputBody>
           <PromptInputFooter>
-            <div>
-              Ask about Studio Ghibli, activites in a city, or for the weather.
-            </div>
+            <PromptInputTools>
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger />
+                <PromptInputActionMenuContent>
+                  <PromptInputActionAddAttachments />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+            </PromptInputTools>
             <PromptInputSubmit disabled={!input && !status} status={status} />
           </PromptInputFooter>
         </PromptInput>
@@ -186,3 +206,5 @@ export const NetworkDemo = () => {
     </div>
   );
 };
+
+export default ClientAISdkDemo;

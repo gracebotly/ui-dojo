@@ -64,7 +64,7 @@ type StepResult = {
   };
 };
 
-export const WorkflowDemo = () => {
+const WorkflowDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -155,3 +155,5 @@ export const WorkflowDemo = () => {
     </div>
   );
 };
+
+export default WorkflowDemo;

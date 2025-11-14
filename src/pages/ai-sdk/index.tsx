@@ -13,7 +13,13 @@ import {
   PromptInputAttachment,
   PromptInputAttachments,
   PromptInputBody,
+  PromptInputButton,
   type PromptInputMessage,
+  PromptInputModelSelect,
+  PromptInputModelSelectContent,
+  PromptInputModelSelectItem,
+  PromptInputModelSelectTrigger,
+  PromptInputModelSelectValue,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputFooter,
@@ -23,8 +29,7 @@ import { Action, Actions } from "@/components/ai-elements/actions";
 import { Fragment, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Response } from "@/components/ai-elements/response";
-import { MASTRA_BASE_URL } from "@/constants";
-import { CopyIcon, RefreshCcwIcon } from "lucide-react";
+import { CopyIcon, GlobeIcon, RefreshCcwIcon } from "lucide-react";
 import {
   Source,
   Sources,
@@ -39,37 +44,55 @@ import {
 import { Loader } from "@/components/ai-elements/loader";
 import { DefaultChatTransport } from "ai";
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
-import { changeBgColor } from "@/mastra/tools/color-change-tool";
+import { MASTRA_BASE_URL } from "@/constants";
 
-const suggestions = [
-  "Change the background color to a dark blue",
-  "Change the background color to rebeccapurple",
+const models = [
+  {
+    name: "GPT 4o Mini",
+    value: "openai/gpt-4o-mini",
+  },
+  {
+    name: "Deepseek R1",
+    value: "vercel/deepseek/deepseek-r1",
+  },
 ];
 
-export const ClientAISdkDemo = () => {
+const suggestions = [
+  "Tell me about Spirited Away",
+  "Who are the main characters in Princess Mononoke?",
+  "Summarize the plot of Howl's Moving Castle",
+];
+
+const AISdkDemo = () => {
   const [input, setInput] = useState("");
+  const [model, setModel] = useState<string>(models[0].value);
+  const [webSearch, setWebSearch] = useState(false);
   const { messages, sendMessage, status, regenerate } = useChat({
     transport: new DefaultChatTransport({
-      api: `${MASTRA_BASE_URL}/chat/bgColorAgent`,
+      api: `${MASTRA_BASE_URL}/chat/ghibliAgent`,
     }),
-    onToolCall: ({ toolCall }) => {
-      if (toolCall.toolName === "colorChangeTool") {
-        changeBgColor((toolCall.input as { color: string }).color);
-      }
-    },
   });
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
+    const hasAttachments = Boolean(message.files?.length);
 
-    if (!hasText) {
+    if (!(hasText || hasAttachments)) {
       return;
     }
 
-    sendMessage({
-      text: message.text || "",
-      files: message.files,
-    });
+    sendMessage(
+      {
+        text: message.text || "Sent with attachments",
+        files: message.files,
+      },
+      {
+        body: {
+          model: model,
+          webSearch: webSearch,
+        },
+      },
+    );
     setInput("");
   };
 
@@ -198,6 +221,33 @@ export const ClientAISdkDemo = () => {
                   <PromptInputActionAddAttachments />
                 </PromptInputActionMenuContent>
               </PromptInputActionMenu>
+              <PromptInputButton
+                variant={webSearch ? "default" : "ghost"}
+                onClick={() => setWebSearch(!webSearch)}
+              >
+                <GlobeIcon size={16} />
+                <span>Search</span>
+              </PromptInputButton>
+              <PromptInputModelSelect
+                onValueChange={(value) => {
+                  setModel(value);
+                }}
+                value={model}
+              >
+                <PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectValue />
+                </PromptInputModelSelectTrigger>
+                <PromptInputModelSelectContent>
+                  {models.map((model) => (
+                    <PromptInputModelSelectItem
+                      key={model.value}
+                      value={model.value}
+                    >
+                      {model.name}
+                    </PromptInputModelSelectItem>
+                  ))}
+                </PromptInputModelSelectContent>
+              </PromptInputModelSelect>
             </PromptInputTools>
             <PromptInputSubmit disabled={!input && !status} status={status} />
           </PromptInputFooter>
@@ -206,3 +256,5 @@ export const ClientAISdkDemo = () => {
     </div>
   );
 };
+
+export default AISdkDemo;

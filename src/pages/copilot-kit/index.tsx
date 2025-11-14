@@ -3,7 +3,7 @@ import { CopilotKit } from "@copilotkit/react-core";
 import "@copilotkit/react-ui/styles.css";
 import { MASTRA_BASE_URL } from "@/constants";
 
-export function CopilotKitDemo() {
+function CopilotKitDemo() {
   return (
     <CopilotKit
       runtimeUrl={`${MASTRA_BASE_URL}/copilotkit`}
@@ -18,3 +18,5 @@ export function CopilotKitDemo() {
     </CopilotKit>
   );
 }
+
+export default CopilotKitDemo;

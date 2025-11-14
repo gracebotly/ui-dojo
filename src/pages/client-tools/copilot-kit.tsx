@@ -4,7 +4,7 @@ import "@copilotkit/react-ui/styles.css";
 import { changeBgColor } from "@/mastra/tools/color-change-tool";
 import { MASTRA_BASE_URL } from "@/constants";
 
-export function ClientCopilotKitDemo() {
+function ClientCopilotKitDemo() {
   return (
     <CopilotKit
       runtimeUrl={`${MASTRA_BASE_URL}/copilotkit`}
@@ -41,3 +41,5 @@ function Chat() {
     />
   );
 }
+
+export default ClientCopilotKitDemo;

@@ -29,7 +29,9 @@ const ProgressIndicator = ({ progress }: { progress: ProgressData }) => {
       <div className="flex items-center gap-3">
         <Badge
           variant={progress.status === "in-progress" ? "default" : "default"}
-          className={progress.status === "in-progress" ? "bg-primary" : "bg-green-600"}
+          className={
+            progress.status === "in-progress" ? "bg-primary" : "bg-green-600"
+          }
         >
           {progress.status === "in-progress" ? "In Progress" : "Done"}
         </Badge>
@@ -39,7 +41,7 @@ const ProgressIndicator = ({ progress }: { progress: ProgressData }) => {
   );
 };
 
-export const GenerativeUserInterfacesCustomEventsDemo = () => {
+const GenerativeUserInterfacesCustomEventsDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -127,3 +129,5 @@ export const GenerativeUserInterfacesCustomEventsDemo = () => {
     </div>
   );
 };
+
+export default GenerativeUserInterfacesCustomEventsDemo;

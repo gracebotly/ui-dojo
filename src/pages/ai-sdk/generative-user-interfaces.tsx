@@ -117,7 +117,7 @@ const Weather = ({
   );
 };
 
-export const GenerativeUserInterfacesDemo = () => {
+const GenerativeUserInterfacesDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -189,3 +189,5 @@ export const GenerativeUserInterfacesDemo = () => {
     </div>
   );
 };
+
+export default GenerativeUserInterfacesDemo;

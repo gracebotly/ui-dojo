@@ -41,14 +41,6 @@ export const mastra = new Mastra({
   storage: new LibSQLStore({
     url: ":memory:",
   }),
-  bundler: {
-    externals: [
-      "@ag-ui/mastra",
-      "@ag-ui/core",
-      "@ag-ui/client",
-      "@copilotkit/runtime",
-    ],
-  },
   server: {
     // Use a non-default port to avoid conflicts with other Mastra servers running locally
     port: 4750,

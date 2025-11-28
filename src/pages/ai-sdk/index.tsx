@@ -102,7 +102,7 @@ const AISdkDemo = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 relative size-full">
+    <div className="max-w-4xl mx-auto p-0 md:p-6 relative size-full">
       <div className="flex flex-col h-full">
         <Conversation className="h-full">
           <ConversationContent>

@@ -37,14 +37,14 @@ export const CodeBlock = ({
   <CodeBlockContext.Provider value={{ code }}>
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-md border bg-background text-foreground",
+        "relative w-full overflow-hidden rounded-md border bg-background text-foreground contain-[inline-size]",
         className,
       )}
       {...props}
     >
       <div className="relative">
         <SyntaxHighlighter
-          className="overflow-hidden dark:hidden"
+          className="overflow-x-auto dark:hidden"
           codeTagProps={{
             className: "font-mono text-sm",
           }}
@@ -67,7 +67,7 @@ export const CodeBlock = ({
           {code}
         </SyntaxHighlighter>
         <SyntaxHighlighter
-          className="hidden overflow-hidden dark:block"
+          className="hidden overflow-x-auto dark:block"
           codeTagProps={{
             className: "font-mono text-sm",
           }}

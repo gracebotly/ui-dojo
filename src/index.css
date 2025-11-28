@@ -128,3 +128,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.list-inside {
+  list-style-position: inside;
+}

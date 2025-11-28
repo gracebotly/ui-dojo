@@ -103,7 +103,7 @@ const WorkflowAgentTextStreamingDemo = () => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter a city name (e.g., San Francisco)"
+            placeholder="Enter a city name"
           />
           <Button type="submit" disabled={status !== "ready"}>
             Analyze Weather

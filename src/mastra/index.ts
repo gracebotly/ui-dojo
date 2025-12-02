@@ -48,7 +48,7 @@ export const mastra = new Mastra({
     url: ":memory:",
   }),
   bundler: {
-    externals: ['graphql', '@copilotkit/runtime']
+    externals: ['graphql', '@copilotkit/runtime', '@ag-ui/client', '@ag-ui/langgraph']
   },
   server: {
     // Use a non-default port to avoid conflicts with other Mastra servers running locally

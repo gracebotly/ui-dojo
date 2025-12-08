@@ -45,7 +45,7 @@ const suggestions = [
 const AssistantUIDemo = () => {
   const { agentId, threadId } = useParams();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isNewThread = searchParams.get("new") === "true";
 
   const { data: agent, isLoading: isAgentLoading } = useAgent(agentId!);
@@ -78,6 +78,12 @@ const AssistantUIDemo = () => {
     return null;
   }
 
+  const handleRefreshThreadList = () => {
+    searchParams.delete("new");
+    setSearchParams(searchParams);
+    refreshThreads();
+  };
+
   return (
     <div className="grid grid-cols-[130px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] gap-x-2 size-full">
       <Sidebar
@@ -93,7 +99,7 @@ const AssistantUIDemo = () => {
         agentName={agent?.name}
         threadId={threadId}
         memory={memory?.result}
-        refreshThreadList={refreshThreads}
+        refreshThreadList={handleRefreshThreadList}
         isNewThread={isNewThread}
       />
     </div>

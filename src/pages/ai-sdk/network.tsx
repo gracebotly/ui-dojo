@@ -99,7 +99,10 @@ const DisplayAgentStep = ({
           </div>
         )}
         <ToolOutput
-          output={ (task as AgentDataPart['data'])?.text || step.output as ToolUIPart["output"]}
+          output={
+            (task as AgentDataPart["data"])?.text ||
+            (step.output as ToolUIPart["output"])
+          }
           errorText={step.status === "failed" ? "Step failed" : undefined}
           language="markdown"
         />
@@ -136,10 +139,9 @@ const NetworkDemo = () => {
     setInput("");
   };
 
-const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = (suggestion: string) => {
     sendMessage({ text: suggestion });
   };
-
 
   return (
     <div className="max-w-4xl mx-auto p-0 md:p-6 relative size-full">
@@ -274,8 +276,8 @@ const handleSuggestionClick = (suggestion: string) => {
                               key={`${step.name}-${stepIndex}`}
                               step={step}
                               stepName={step.name}
-                             // @ts-expect-error - task is not typed yet , it will be typed in the future version of the @mastra/ai-sdk package
-                              task={(step)?.task}
+                              // @ts-expect-error - task is not typed yet , it will be typed in the future version of the @mastra/ai-sdk package
+                              task={step?.task}
                             />
                           ))}
                         </div>

@@ -41,6 +41,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
+import { newThreadLink } from "@/lib/utils";
 
 type SidebarItemEntry = {
   id: string;
@@ -202,7 +203,7 @@ const SIDEBAR: SidebarEntry[] = [
       {
         id: "assistant-ui-chat",
         title: "Chat",
-        url: "/assistant-ui/ghibliAgent/chat/new",
+        url: newThreadLink("assistant-ui", "ghibliAgent"),
         description: "How to use Assistant UI with Mastra",
         explanation:
           "This example demonstrates a more complex integration between Mastra and Assistant UI (a simpler example can be found in the Client Tools section). The useExternalStoreRuntime() hook allows a tight integration into Mastra and can be used for for message, memory, and thread storage.",
@@ -367,13 +368,10 @@ function SidebarSection({
 export default function Page({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const normalizedPathname = location.pathname.includes("/chat/")
-    ? location.pathname.split("/chat/")[0] + "/chat/new"
-    : location.pathname;
+  const fullUrl = location.pathname + location.search;
 
   function findEntry(item: SidebarItemEntry): boolean {
-    return item.url === normalizedPathname;
+    return item.url === fullUrl;
   }
 
   const pageTitleEntry = SIDEBAR.flatMap((group) => group.items).find(
@@ -422,7 +420,7 @@ export default function Page({ children }: { children: React.ReactNode }) {
                       <CollapsibleContent>
                         <SidebarSection
                           sdk={sdk}
-                          activeUrl={normalizedPathname}
+                          activeUrl={fullUrl}
                           onNavigate={navigate}
                         />
                       </CollapsibleContent>

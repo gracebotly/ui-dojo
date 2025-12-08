@@ -34,6 +34,7 @@
     "@mastra/client-js": "1.0.0-beta.8",
     "@mastra/core": "1.0.0-beta.8",
     "@mastra/libsql": "1.0.0-beta.5",
+    "@mastra/loggers": "1.0.0-beta.3",
     "@mastra/memory": "1.0.0-beta.4",
     "@mastra/react": "0.1.0-beta.8",
     "@radix-ui/react-avatar": "^1.1.11",

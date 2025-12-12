@@ -1,5 +1,6 @@
 import { Mastra } from "@mastra/core/mastra";
 import { registerCopilotKit } from "@ag-ui/mastra/copilotkit";
+import { PinoLogger } from "@mastra/loggers";
 import { LibSQLStore } from "@mastra/libsql";
 import { chatRoute, workflowRoute, networkRoute } from "@mastra/ai-sdk";
 import { ghibliAgent } from "./agents/ghibli-agent";
@@ -49,6 +50,10 @@ export const mastra = new Mastra({
   storage: new LibSQLStore({
     id: "mastra-storage",
     url: ":memory:",
+  }),
+  logger: new PinoLogger({
+    name: "Mastra",
+    level: "info",
   }),
   bundler: {
     externals: ["@copilotkit/runtime"],
